@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<key>DNSSettings</key>
+			<dict>
+				<key>DNSProtocol</key>
+				<string>HTTPS</string>
+				<key>ServerURL</key>
+				<string>https://dns.astracat.ru/dns-query</string>
+			</dict>
+
+			<key>PayloadDescription</key>
+			<string>
+DNS ASTRACAT — безопасный DNS-сервис для обхода гео-блокировок и DNS-ограничений провайдеров.
+Работает без VPN, не снижает скорость и не меняет IP-адрес.
+Использует DNS over HTTPS (DoH) для защиты от подмены и слежки.
+Сайт: https://astracat.ru
+Telegram: https://t.me/ASTRACATUO
+			</string>
+
+			<key>PayloadDisplayName</key>
+			<string>AstraCat DNS (DoH)</string>
+
+			<key>PayloadIdentifier</key>
+			<string>ru.astracat.dnssettings.managed</string>
+
+			<key>PayloadType</key>
+			<string>com.apple.dnsSettings.managed</string>
+
+			<key>PayloadUUID</key>
+			<string>8E2F4A9C-5C1D-4B2F-9A1E-6C7D4A1F3B90</string>
+
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+
+			<key>ProhibitDisablement</key>
+			<false/>
+		</dict>
+	</array>
+
+	<key>PayloadDescription</key>
+	<string>
+ASTRACAT DNS — DNS over HTTPS сервис для обхода региональных блокировок и цензуры.
+Не ведёт логов, не отслеживает пользователей и работает на iOS и macOS.
+astracat.ru | t.me/ASTRACATUO
+	</string>
+
+	<key>PayloadDisplayName</key>
+	<string>AstraCat DNS over HTTPS</string>
+
+	<key>PayloadIdentifier</key>
+	<string>ru.astracat.apple-dns</string>
+
+	<key>PayloadRemovalDisallowed</key>
+	<false/>
+
+	<key>PayloadType</key>
+	<string>Configuration</string>
+
+	<key>PayloadUUID</key>
+	<string>3A9C1E44-7F5E-4D2B-9E6A-2B8F5D91C0AA</string>
+
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>
