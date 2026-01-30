@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ru" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNS Leak Test | BigDig.Energy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        border: "hsl(240 3.7% 15.9%)",
+                        input: "hsl(240 3.7% 15.9%)",
+                        ring: "hsl(240 4.9% 83.9%)",
+                        background: "hsl(240 10% 3.9%)",
+                        foreground: "hsl(0 0% 98%)",
+                        primary: {
+                            DEFAULT: "hsl(0 0% 98%)",
+                            foreground: "hsl(240 5.9% 10%)",
+                        },
+                        secondary: {
+                            DEFAULT: "hsl(240 3.7% 15.9%)",
+                            foreground: "hsl(0 0% 98%)",
+                        },
+                        destructive: {
+                            DEFAULT: "hsl(0 62.8% 30.6%)",
+                            foreground: "hsl(0 0% 98%)",
+                        },
+                        muted: {
+                            DEFAULT: "hsl(240 3.7% 15.9%)",
+                            foreground: "hsl(240 5% 64.9%)",
+                        },
+                        accent: {
+                            DEFAULT: "hsl(240 3.7% 15.9%)",
+                            foreground: "hsl(0 0% 98%)",
+                        },
+                        popover: {
+                            DEFAULT: "hsl(240 10% 3.9%)",
+                            foreground: "hsl(0 0% 98%)",
+                        },
+                        card: {
+                            DEFAULT: "hsl(240 10% 3.9%)",
+                            foreground: "hsl(0 0% 98%)",
+                        },
+                    },
+                    borderRadius: {
+                        lg: "0.5rem",
+                        md: "calc(0.5rem - 2px)",
+                        sm: "calc(0.5rem - 4px)",
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { 
+            font-family: 'Inter', sans-serif;
+            background-color: hsl(240 10% 3.9%);
+            color: hsl(0 0% 98%);
+        }
+        .shadcn-card {
+            background-color: hsl(240 10% 3.9%);
+            border: 1px solid hsl(240 3.7% 15.9%);
+            border-radius: 0.5rem;
+        }
+        .shadcn-button-primary {
+            background-color: hsl(0 0% 98%);
+            color: hsl(240 5.9% 10%);
+            font-weight: 500;
+            border-radius: 0.5rem;
+            transition: opacity 0.2s;
+        }
+        .shadcn-button-primary:hover {
+            opacity: 0.9;
+        }
+        .shadcn-button-outline {
+            background-color: transparent;
+            border: 1px solid hsl(240 3.7% 15.9%);
+            color: hsl(0 0% 98%);
+            border-radius: 0.5rem;
+        }
+        .shadcn-button-outline:hover {
+            background-color: hsl(240 3.7% 15.9%);
+        }
+        .progress-bar {
+            height: 0.5rem;
+            background-color: hsl(240 3.7% 15.9%);
+            border-radius: 9999px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background-color: hsl(0 0% 98%);
+            transition: width 0.3s ease;
+        }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            border-radius: 9999px;
+            border: 1px solid transparent;
+            padding: 0.125rem 0.625rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+        .badge-outline {
+            border-color: hsl(240 3.7% 15.9%);
+            color: hsl(0 0% 98%);
+        }
+        .badge-success {
+            background-color: rgba(34, 197, 94, 0.1);
+            color: rgb(34, 197, 94);
+            border-color: rgba(34, 197, 94, 0.2);
+        }
+        .badge-error {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: rgb(239, 68, 68);
+            border-color: rgba(239, 68, 68, 0.2);
+        }
+    </style>
+</head>
+<body class="min-h-screen py-12 px-4 md:px-6">
+    <div class="max-w-[800px] mx-auto space-y-8">
+        <!-- Header -->
+        <header class="space-y-2">
+            <h1 class="text-3xl font-bold tracking-tight">DNS Leak Test</h1>
+            <p class="text-muted-foreground">Проверка безопасности вашего сетевого соединения в реальном времени.</p>
+        </header>
+
+        <!-- Current Info Card -->
+        <div class="shadcn-card p-6 space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div class="space-y-1">
+                    <p class="text-sm font-medium text-muted-foreground uppercase tracking-wider">Ваш публичный IP</p>
+                    <div id="current-ip" class="text-2xl font-semibold flex items-center gap-3">
+                        <span class="inline-block w-2 h-2 rounded-full bg-zinc-700"></span>
+                        <span class="text-zinc-500">Загрузка...</span>
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-4 text-sm">
+                    <div class="space-y-1">
+                        <p class="text-xs text-muted-foreground">Провайдер</p>
+                        <p id="isp" class="font-medium">—</p>
+                    </div>
+                    <div class="space-y-1 pl-4 border-l border-border">
+                        <p class="text-xs text-muted-foreground">Локация</p>
+                        <p id="location" class="font-medium">—</p>
+                    </div>
+                </div>
+                <button onclick="startFullTest()" id="start-btn" class="shadcn-button-primary px-6 py-2.5 text-sm disabled:opacity-50">
+                    Запустить тест
+                </button>
+            </div>
+        </div>
+
+        <!-- Progress (Hidden by default) -->
+        <div id="progress-section" class="hidden space-y-4">
+            <div class="flex items-center justify-between text-sm">
+                <span id="progress-status" class="font-medium">Анализ сети...</span>
+                <span id="progress-percent" class="text-muted-foreground">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div id="progress-bar" class="progress-fill" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <!-- Results (Hidden by default) -->
+        <div id="results-section" class="hidden space-y-6 animate-in fade-in duration-500">
+            <!-- Summary Alert -->
+            <div id="status-alert" class="shadcn-card p-4 flex gap-4 items-start border-l-4">
+                <div id="status-icon-container" class="mt-0.5"></div>
+                <div class="space-y-1">
+                    <h3 id="status-title" class="font-semibold leading-none">Результат теста</h3>
+                    <p id="status-desc" class="text-sm text-muted-foreground"></p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- DNS Servers -->
+                <div class="shadcn-card overflow-hidden">
+                    <div class="p-4 border-b border-border bg-zinc-900/50">
+                        <h3 class="text-sm font-semibold">Обнаруженные DNS</h3>
+                    </div>
+                    <div class="p-0">
+                        <table class="w-full text-sm">
+                            <tbody id="dns-list" class="divide-y divide-border">
+                                <!-- JS items -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Analysis Details -->
+                <div class="shadcn-card p-4 space-y-4">
+                    <h3 class="text-sm font-semibold">Детализация</h3>
+                    <div id="analysis-details" class="space-y-3">
+                        <!-- JS items -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-muted-foreground">
+            <div class="flex flex-col md:flex-row items-center gap-4">
+                <div class="flex items-center gap-2">
+                    <span>Работает на базе</span>
+                    <a href="https://bigdig.energy" target="_blank" class="text-foreground hover:underline font-medium">BigDig.Energy</a>
+                </div>
+                <div class="hidden md:block text-border">|</div>
+                <div class="flex items-center gap-2">
+                    <span>Сделано в</span>
+                    <span class="text-foreground font-bold tracking-widest uppercase">ASTRACAT</span>
+                </div>
+            </div>
+            
+            <div class="flex flex-wrap justify-center gap-6">
+                <a href="https://astracat.ru" target="_blank" class="flex items-center gap-2 hover:text-foreground transition-colors">
+                    <i class="fas fa-globe text-sm"></i>
+                    <span>astracat.ru</span>
+                </a>
+                <a href="https://t.me/AstracatUO" target="_blank" class="flex items-center gap-2 hover:text-foreground transition-colors">
+                    <i class="fab fa-telegram text-sm"></i>
+                    <span>@AstracatUO</span>
+                </a>
+                <a href="https://github.com/shadcn-ui/ui" target="_blank" class="hover:text-foreground transition-colors">
+                    <i class="fab fa-github text-sm"></i>
+                </a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const API_BASE = 'https://bigdig.energy';
+        let currentTestId = null;
+
+        window.addEventListener('load', fetchInitialData);
+
+        async function fetchInitialData() {
+            try {
+                const res = await fetch(`${API_BASE}/get_data`);
+                const data = await res.json();
+                
+                const ipEl = document.getElementById('current-ip');
+                ipEl.innerHTML = `
+                    <span class="inline-block w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.5)]"></span>
+                    <span>${data.ip}</span>
+                `;
+                if (data.is_vpn) {
+                    ipEl.innerHTML += `<span class="badge badge-outline ml-2">VPN</span>`;
+                }
+                
+                document.getElementById('isp').textContent = data.isp;
+                document.getElementById('location').textContent = `${data.city}, ${data.country}`;
+            } catch (err) {
+                console.error('Fetch error:', err);
+                document.getElementById('current-ip').innerHTML = '<span class="text-destructive text-sm font-normal">Ошибка подключения</span>';
+            }
+        }
+
+        async function startFullTest() {
+            const btn = document.getElementById('start-btn');
+            const progressSec = document.getElementById('progress-section');
+            const resultsSec = document.getElementById('results-section');
+            const statusText = document.getElementById('progress-status');
+            const progressBar = document.getElementById('progress-bar');
+            const progressPct = document.getElementById('progress-percent');
+
+            btn.disabled = true;
+            btn.textContent = 'Тестирование...';
+            progressSec.classList.remove('hidden');
+            resultsSec.classList.add('hidden');
+            
+            try {
+                statusText.textContent = 'Инициализация сессии...';
+                const startRes = await fetch(`${API_BASE}/start_test`, { method: 'POST' });
+                const { subdomains, test_id } = await startRes.json();
+
+                const total = subdomains.length;
+                for (let i = 0; i < total; i++) {
+                    const pct = Math.round(((i + 1) / total) * 100);
+                    statusText.textContent = `Опрос узла ${i + 1}...`;
+                    progressBar.style.width = `${pct}%`;
+                    progressPct.textContent = `${pct}%`;
+
+                    try {
+                        await fetch(`https://${subdomains[i]}/probe`, { mode: 'no-cors' });
+                    } catch (e) {}
+                    await new Promise(r => setTimeout(r, 50));
+                }
+
+                statusText.textContent = 'Генерация отчета...';
+                await new Promise(r => setTimeout(r, 1000));
+                const res = await fetch(`${API_BASE}/get_results/${test_id}`);
+                displayResults(await res.json());
+            } catch (err) {
+                statusText.textContent = 'Произошла ошибка';
+                statusText.className = 'text-destructive font-medium';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Запустить тест';
+            }
+        }
+
+        function displayResults(data) {
+            document.getElementById('progress-section').classList.add('hidden');
+            document.getElementById('results-section').classList.remove('hidden');
+
+            const alert = document.getElementById('status-alert');
+            const iconCont = document.getElementById('status-icon-container');
+            const title = document.getElementById('status-title');
+            const desc = document.getElementById('status-desc');
+            const dnsList = document.getElementById('dns-list');
+            const details = document.getElementById('analysis-details');
+
+            const hasLeak = data.leaks && data.leaks.length > 0;
+            const servers = data.dns_servers || [];
+
+            if (hasLeak) {
+                alert.style.borderLeftColor = 'rgb(239, 68, 68)';
+                iconCont.innerHTML = '<i class="fas fa-exclamation-triangle text-red-500"></i>';
+                title.textContent = 'Обнаружена утечка DNS';
+                desc.textContent = 'Ваши DNS-запросы проходят через сторонние серверы. Это может раскрыть вашу активность.';
+            } else {
+                alert.style.borderLeftColor = 'rgb(34, 197, 94)';
+                iconCont.innerHTML = '<i class="fas fa-check-circle text-green-500"></i>';
+                title.textContent = 'Безопасно';
+                desc.textContent = 'Утечек не обнаружено. Все запросы проходят через доверенные DNS узлы.';
+            }
+
+            dnsList.innerHTML = servers.length ? servers.map(s => `
+                <tr class="hover:bg-zinc-900/50 transition-colors">
+                    <td class="p-4 font-mono text-xs text-zinc-400">${s.ip}</td>
+                    <td class="p-4 text-right">
+                        <div class="text-xs font-medium">${s.isp || 'N/A'}</div>
+                        <div class="text-[10px] text-muted-foreground uppercase">${s.country || ''}</div>
+                    </td>
+                </tr>
+            `).join('') : '<tr><td colspan="2" class="p-8 text-center text-muted-foreground">Нет данных</td></tr>';
+
+            details.innerHTML = `
+                <div class="flex justify-between items-center py-2 border-b border-border/50 text-sm">
+                    <span class="text-muted-foreground">Узлов проверено</span>
+                    <span class="font-medium">${data.total_probes || 0}</span>
+                </div>
+                <div class="flex justify-between items-center py-2 border-b border-border/50 text-sm">
+                    <span class="text-muted-foreground">Уникальных DNS</span>
+                    <span class="font-medium">${servers.length}</span>
+                </div>
+                <div class="flex justify-between items-center py-2 text-sm">
+                    <span class="text-muted-foreground">Статус утечки</span>
+                    <span class="badge ${hasLeak ? 'badge-error' : 'badge-success'}">${hasLeak ? 'УТЕЧКА' : 'ЧИСТО'}</span>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
