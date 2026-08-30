@@ -14,13 +14,7 @@
 			</dict>
 
 			<key>PayloadDescription</key>
-			<string>
-DNS ASTRACAT — безопасный DNS-сервис для обхода гео-блокировок и DNS-ограничений провайдеров.
-Работает без VPN, не снижает скорость и не меняет IP-адрес.
-Использует DNS over HTTPS (DoH) для защиты от подмены и слежки.
-Сайт: https://astracat.ru
-Telegram: https://t.me/ASTRACATUO
-			</string>
+			<string>DNS ASTRACAT — безопасный DNS-сервис для обхода гео-блокировок и DNS-ограничений провайдеров. Работает без VPN, не снижает скорость и не меняет IP-адрес. Использует DNS over HTTPS (DoH) для защиты от подмены и слежки. Сайт: https://astracat.ru Telegram: https://t.me/ASTRACATUO</string>
 
 			<key>PayloadDisplayName</key>
 			<string>AstraCat DNS (DoH)</string>
@@ -43,11 +37,7 @@ Telegram: https://t.me/ASTRACATUO
 	</array>
 
 	<key>PayloadDescription</key>
-	<string>
-ASTRACAT DNS — DNS over HTTPS сервис для обхода региональных блокировок и цензуры.
-Не ведёт логов, не отслеживает пользователей и работает на iOS и macOS.
-astracat.ru | t.me/ASTRACATUO
-	</string>
+	<string>ASTRACAT DNS — DNS over HTTPS сервис для обхода региональных блокировок и ограничений. Работает на iOS и macOS. astracat.ru | t.me/ASTRACATUO</string>
 
 	<key>PayloadDisplayName</key>
 	<string>AstraCat DNS over HTTPS</string>
