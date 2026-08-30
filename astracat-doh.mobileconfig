@@ -10,7 +10,7 @@
 				<key>DNSProtocol</key>
 				<string>HTTPS</string>
 				<key>ServerURL</key>
-				<string>https://dns.astracat.ru/dns-query</string>
+				<string>https://dns.astracat.network/dns-query</string>
 			</dict>
 
 			<key>PayloadDescription</key>
