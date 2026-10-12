@@ -2,59 +2,60 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>PayloadContent</key>
-	<array>
-		<dict>
-			<key>DNSSettings</key>
-			<dict>
-				<key>DNSProtocol</key>
-				<string>HTTPS</string>
-				<key>ServerURL</key>
-				<string>https://dns.astracat.network/dns-query</string>
-			</dict>
+    <key>PayloadContent</key>
+    <array>
+        <dict>
+            <key>DNSSettings</key>
+            <dict>
+                <key>DNSProtocol</key>
+                <string>HTTPS</string>
 
-			<key>PayloadDescription</key>
-			<string>DNS ASTRACAT — безопасный DNS-сервис для обхода гео-блокировок и DNS-ограничений провайдеров. Работает без VPN, не снижает скорость и не меняет IP-адрес. Использует DNS over HTTPS (DoH) для защиты от подмены и слежки. Сайт: https://astracat.ru Telegram: https://t.me/ASTRACATUO</string>
+                <key>ServerURL</key>
+                <string>https://dns.commonnet.work/dns-query</string>
+            </dict>
 
-			<key>PayloadDisplayName</key>
-			<string>AstraCat DNS (DoH)</string>
+            <key>PayloadDescription</key>
+            <string>CommonDNS — защищённый DNS-сервис от Common Network. Использует DNS over HTTPS (DoH) для шифрования DNS-запросов, защиты от подмены DNS-ответов и ограничений на уровне DNS. Инфраструктура включает серверы в Москве и Челябинске для быстрой и стабильной обработки запросов. Работает без VPN и не изменяет внешний IP-адрес. Telegram: https://t.me/commondns</string>
 
-			<key>PayloadIdentifier</key>
-			<string>ru.astracat.dnssettings.managed</string>
+            <key>PayloadDisplayName</key>
+            <string>CommonDNS (DoH)</string>
 
-			<key>PayloadType</key>
-			<string>com.apple.dnsSettings.managed</string>
+            <key>PayloadIdentifier</key>
+            <string>work.commonnet.dns.doh</string>
 
-			<key>PayloadUUID</key>
-			<string>8E2F4A9C-5C1D-4B2F-9A1E-6C7D4A1F3B90</string>
+            <key>PayloadType</key>
+            <string>com.apple.dnsSettings.managed</string>
 
-			<key>PayloadVersion</key>
-			<integer>1</integer>
+            <key>PayloadUUID</key>
+            <string>5B8A3D91-2F64-4E8C-9A73-D1F60B2C5E47</string>
 
-			<key>ProhibitDisablement</key>
-			<false/>
-		</dict>
-	</array>
+            <key>PayloadVersion</key>
+            <integer>1</integer>
 
-	<key>PayloadDescription</key>
-	<string>ASTRACAT DNS — DNS over HTTPS сервис для обхода региональных блокировок и ограничений. Работает на iOS и macOS. astracat.ru | t.me/ASTRACATUO</string>
+            <key>ProhibitDisablement</key>
+            <false/>
+        </dict>
+    </array>
 
-	<key>PayloadDisplayName</key>
-	<string>AstraCat DNS over HTTPS</string>
+    <key>PayloadDescription</key>
+    <string>CommonDNS — зашифрованный DNS-сервис от Common Network. Поддержка DNS over HTTPS, защита DNS-запросов, распределённая инфраструктура в Москве и Челябинске. Совместим с iOS и macOS. Официальный канал: https://t.me/commondns</string>
 
-	<key>PayloadIdentifier</key>
-	<string>ru.astracat.apple-dns</string>
+    <key>PayloadDisplayName</key>
+    <string>CommonDNS — Secure DNS</string>
 
-	<key>PayloadRemovalDisallowed</key>
-	<false/>
+    <key>PayloadIdentifier</key>
+    <string>work.commonnet.dns.profile</string>
 
-	<key>PayloadType</key>
-	<string>Configuration</string>
+    <key>PayloadRemovalDisallowed</key>
+    <false/>
 
-	<key>PayloadUUID</key>
-	<string>3A9C1E44-7F5E-4D2B-9E6A-2B8F5D91C0AA</string>
+    <key>PayloadType</key>
+    <string>Configuration</string>
 
-	<key>PayloadVersion</key>
-	<integer>1</integer>
+    <key>PayloadUUID</key>
+    <string>7C2E91A4-6B38-4FD0-8E15-A9D73C5B2046</string>
+
+    <key>PayloadVersion</key>
+    <integer>1</integer>
 </dict>
 </plist>
